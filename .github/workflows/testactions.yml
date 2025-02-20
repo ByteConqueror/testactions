@@ -13,11 +13,12 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Set up SSH
-      uses: webfactory/ssh-agent@v0.5.3
-      with:
-        ssh-private-key: ${{ secrets.TEST_SECRET }}
-
+    - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: |
+            ${{ secrets.TEST_SECRET }}
+    
     - name: Copy update script to server
       run: scp -o StrictHostKeyChecking=no ./update_wordpress.sh admin@51.92.221.242:/home/admin/update_wordpress.sh
 
