@@ -27,3 +27,5 @@ if [ "$LOCAL_VERSION" = "none" ] || [ "$LOCAL_VERSION" != "$NEW_VERSION" ]; then
 else
   exit 0 
 fi
+
+
