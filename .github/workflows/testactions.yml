@@ -40,6 +40,3 @@ jobs:
           echo "status=fail" >> $GITHUB_ENV
           exit 1
         fi
-
-    - name: Set status
-      run: echo "Status: ${{ env.status }}'
