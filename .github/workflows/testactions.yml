@@ -16,7 +16,7 @@ jobs:
     - name: Setup SSH
       uses: webfactory/ssh-agent@v0.7.0
       with:
-        ssh-private-key: ${{ secrets.TEST_SECRET }}
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
     - name: Copy update script to server
       run: scp -o StrictHostKeyChecking=no ./update_wordpress.sh admin@51.92.221.242:/home/admin/update_wordpress.sh
