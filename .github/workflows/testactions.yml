@@ -1,17 +1,39 @@
-name: Super-Linter
+name: Deploy and Check Updates
 
-on: push
+on:
+  push:
+    branches:
+      - main
 
 jobs:
-  super-lint:
-    name: Lint code base
+  deploy:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
 
-      - name: Run Super-Linter
-        uses: github/super-linter@v4
-        env:
-          DEFAULT_BRANCH: main
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up SSH
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    - name: Copy script to server
+      run: scp -o StrictHostKeyChecking=no ./check_updates.sh user@your_server:/path/to/destination
+
+    - name: Run script on server
+      run: ssh -o StrictHostKeyChecking=no user@your_server 'bash /path/to/destination/check_updates.sh'
+
+    - name: Check for updates
+      id: check_updates
+      run: |
+        ssh -o StrictHostKeyChecking=no user@your_server 'bash /path/to/destination/check_updates.sh'
+        if [ $? -eq 0 ]; then
+          echo "status=ok" >> $GITHUB_ENV
+        else
+          echo "status=fail" >> $GITHUB_ENV
+          exit 1
+        fi
+
+    - name: Set status
+      run: echo "Status: ${{ env.status }}"
