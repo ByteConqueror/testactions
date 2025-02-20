@@ -19,21 +19,21 @@ jobs:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
     - name: Copy update script to server
-      run: scp -o StrictHostKeyChecking=no ./update_wordpress.sh admin@51.92.221.242:/home/user/update_wordpress.sh
+      run: scp -o StrictHostKeyChecking=no ./update_wordpress.sh admin@51.92.221.242:/home/admin/update_wordpress.sh
 
     - name: Check script path
-      run: ssh -o StrictHostKeyChecking=no admin@51.92.221.242 'ls -l /home/user/update_wordpress.sh'
+      run: ssh -o StrictHostKeyChecking=no admin@51.92.221.242 'ls -l /home/admin/update_wordpress.sh'
 
     - name: Check script permissions
-      run: ssh -o StrictHostKeyChecking=no admin@51.92.221.242 'chmod +x /home/user/update_wordpress.sh'
+      run: ssh -o StrictHostKeyChecking=no admin@51.92.221.242 'chmod +x /home/admin/update_wordpress.sh'
 
     - name: Run update script on server
-      run: ssh -o StrictHostKeyChecking=no admin@51.92.221.242 'bash /home/user/update_wordpress.sh'
+      run: ssh -o StrictHostKeyChecking=no admin@51.92.221.242 'bash /home/admin/update_wordpress.sh'
 
     - name: Check update status
       id: check_update
       run: |
-        ssh -o StrictHostKeyChecking=no admin@51.92.221.242 'bash /home/user/update_wordpress.sh'
+        ssh -o StrictHostKeyChecking=no admin@51.92.221.242 'bash /home/admin/update_wordpress.sh'
         if [ $? -eq 0 ]; then
           echo "status=ok" >> $GITHUB_ENV
         else
